@@ -1,23 +1,33 @@
+const fs = require('fs');
+
 // Load up the discord.js library
 const Discord = require("discord.js");
-const ytdl = require("ytdl-core");
 
 // This is your client. Some people call it `bot`, some people call it `self`, 
 // some might call it `cootchie`. Either way, when you see `client.something`, or `bot.something`,
 // this is what we're refering to. Your client.
 const client = new Discord.Client();
+client.commands = new Discord.Collection();
 
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
+
+//GIPHY client here
 var gphapiclient = require('giphy-js-sdk-core');
 giphy = gphapiclient('M0HEHRacgyIxYDNNj97sebeZg90HfKte')
 
-//YT api key: AIzaSyDI5Waf6cRhon6yy3bAugvQKOW5cwVieyU
 
 // Here we load the config.json file that contains our token and our prefix values. 
 const config = require("./config.json");
 // config.token contains the bot's token
 // config.prefix contains the message prefix.
 
-client.on("ready", () => {
+//CONSOLE stuff down here
+client.on("ready", async () => {
   // This event will run if the bot starts, and logs in, successfully.
   console.log(`Bot has activated, server stats: ${client.users.size} users, ${client.channels.size} channels, ${client.guilds.size} guilds.`); 
   // Example of changing the bot's playing game to something useful. `client.user` is what the
@@ -26,6 +36,7 @@ client.on("ready", () => {
   //client.user.setActivity(`.help | Serving ${client.guilds.size} servers`);
 
   client.user.setActivity(`${client.users.size} kindly users | .help`, { type: 'WATCHING' });
+
 });
 
 client.on("guildCreate", guild => {
@@ -56,16 +67,32 @@ client.on("message", async message => {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
-  
+  const cmd = client.commands.get(command)
+
+
+
+  if (!cmd) return;
+  cmd.run(client, args);
+
+
+  // if (!client.commands.has(command)) return;
+
+	// try {
+	// 	client.commands.get(command);
+	// } catch (error) {
+	// 	console.error(error);
+	// 	message.reply('there was an error trying to execute that command!');
+	// }
+
   // Let's go with a few common example commands! Feel free to delete or change those.
   
-  if(command === "ping") {
+  /*if(command === "ping") {
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
     const m = await message.channel.send("Ping?");
     m.edit(`${m.createdTimestamp - message.createdTimestamp}ms.`);
   }
-  
+ 
   if(command === "say") {
     const pembacot = message.author;
     // makes the bot say something and delete the message. As an example, it's open to anyone to use. 
@@ -219,6 +246,7 @@ client.on("message", async message => {
 
   }
   
+  
   if(command === "ban") {
     if(!message.member.hasPermission(["ADMINISTRATOR", "BAN_MEMBERS"]))
       return message.reply("Sorry, you don't have permissions to use this!");
@@ -255,9 +283,8 @@ client.on("message", async message => {
     message.channel.bulkDelete(fetched)
       .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
 }
-
   // "});" yang dibawah ini, TIDAK BOLEH DIHAPUS ATAU DIGANTI KEDUDUKANNYA!!
 
-
+*/
 });
 client.login(config.token);
