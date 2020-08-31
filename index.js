@@ -18,7 +18,7 @@ client.on("ready", async () => {
   console.log(`Bot has activated, server stats: ${client.users.size} users, ${client.channels.size} channels, ${client.guilds.size} guilds.`); 
 
   //discord presence
-  client.user.setActivity(`on Alpha testing. v0.1-alpha`);
+  client.user.setActivity(`on Alpha testing. v0.2-alpha`);
 
 });
 //CLIENT ON GUILD CREATE
@@ -49,4 +49,4 @@ client.on("message", async message => {
 });
 
 
-client.login(token.token);
+client.login(config.token);
