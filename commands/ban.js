@@ -25,6 +25,6 @@ module.exports = {
             const embed = new Discord.RichEmbed()
                 .setColor('F21111')
                 .addField(`:hammer:${user.tag} banned from the server.`, `reason: ${reason}`)
-        message.channel.send(embed);     
+        message.channel.send(embed);
     }
 }

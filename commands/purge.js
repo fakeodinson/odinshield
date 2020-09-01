@@ -20,11 +20,11 @@ module.exports = {
         message.channel.bulkDelete(fetched)
           .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
         
-          const timeout = 5000
+          const timeout = 3000
           const embed = new Discord.RichEmbed()
           .setColor('fc9403')
           .setTitle(`:pencil: deleted ${deleteCount - 1} message(s)`)
-          .setDescription(`this message will be auto deleted in ${timeout - 4995}s`)
+          .setDescription(`this message will be auto deleted in ${timeout - 2997}s`)
 
         const waitdelete = await message.channel.send(embed);
         waitdelete.delete(timeout);
