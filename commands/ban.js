@@ -13,7 +13,7 @@ module.exports = {
         let member = message.mentions.members.first() || message.guild.members.get(args[0]);
         if(!member)
             return message.reply('mention a valid member of this server.');
-        if(!member.banable)
+        if(!member.bannable)
         return message.reply('i cannot ban this user. Do they have higher role?');
 
         let reason = args.slice(2).join(' ');
